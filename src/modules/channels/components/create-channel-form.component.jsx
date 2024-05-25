@@ -1,25 +1,26 @@
 import React from 'react';
-import { Collapse, Form, Input, Button, message } from 'antd';
+import { Collapse, Form, Input, Button } from 'antd';
 import axios from 'axios';
+import { showSuccess, showError } from '../../common/utils/messages.utils';
+import { GET_CHANNEL, getApiUrl } from '../../common/consts';
 
 const { Panel } = Collapse;
 
 export const CreateChannelForm = () => {
   const onSubmit = async (values) => {
     try {
-        console.log(values);
-      const response = await axios.post('http://localhost:4000/channel', {...values, accountIds: values.accountIds.length > 0 ? values.accountIds.split(',') : []});
-      console.log('Response:', response.data);
-      message.success('Channel created successfully!');
+      await axios.post(getApiUrl(GET_CHANNEL), { ...values });
+
+      showSuccess('Канал успішно створено!');
     } catch (error) {
-      console.error('Error creating channel:', error);
-      message.error('Failed to create channel. Please try again later.');
+      showError('Помилка при створені канал. Спробуйте ще раз');
+      console.error('Помилка при створенні каналу:', error);
     }
   };
 
   return (
     <Collapse defaultActiveKey={['1']} bordered={false}>
-      <Panel header="Create Channel" key="1">
+      <Panel header="Додати канал" key="1">
         <Form
           name="createChannelForm"
           onFinish={onSubmit}
@@ -27,21 +28,15 @@ export const CreateChannelForm = () => {
           initialValues={{ accountIds: [] }}
         >
           <Form.Item
-            label="Link"
+            label="Посилання"
             name="link"
-            rules={[{ required: true, message: 'Please enter the channel link!' }]}
+            rules={[{ required: true, message: 'Введіть посилання на канал!' }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Account IDs"
-            name="accountIds"
-          >
-            <Input.TextArea autoSize={{ minRows: 3 }} placeholder="Enter account IDs separated by commas" />
-          </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Create
+              Додати
             </Button>
           </Form.Item>
         </Form>

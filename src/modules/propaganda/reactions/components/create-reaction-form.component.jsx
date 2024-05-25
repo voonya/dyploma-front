@@ -1,25 +1,27 @@
 import React from 'react';
-import { Collapse, Form, Input, Button, message, InputNumber } from 'antd';
+import { Collapse, Form, Input, Button, InputNumber } from 'antd';
 import axios from 'axios';
+
+import { GET_REACTIONS, getApiUrl } from '../../../common/consts';
+import { showSuccess, showError } from '../../../common/utils/messages.utils';
 
 const { Panel } = Collapse;
 
 export const CreateReactionForm = () => {
   const onSubmit = async (values) => {
     try {
-        console.log(values);
-      const response = await axios.post('http://localhost:4000/reactions', {...values, rank: Number(values.rank)});
-      console.log('Response:', response.data);
-      message.success('Reaction created successfully!');
+      await axios.post(getApiUrl(GET_REACTIONS), { ...values, rank: Number(values.rank) });
+
+      showSuccess('Реакція успішно додана!');
     } catch (error) {
+      showError('Помилка при створенні реакції. Спробуйте ще раз.');
       console.error('Error creating reaction:', error);
-      message.error('Failed to create reaction. Please try again later.');
     }
   };
 
   return (
     <Collapse defaultActiveKey={['1']} bordered={false}>
-      <Panel header="Create Reaction" key="1">
+      <Panel header="Додати реакцію" key="1">
         <Form
           name="createReactionForm"
           onFinish={onSubmit}
@@ -27,22 +29,22 @@ export const CreateReactionForm = () => {
           initialValues={{ accountIds: [] }}
         >
           <Form.Item
-            label="Reaction"
+            label="Реакція"
             name="reaction"
-            rules={[{ required: true, message: 'Please enter the reaction!' }]}
+            rules={[{ required: true, message: 'Введіть реакцію!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Rank from 0 to 10"
+            label="Оцінка від 0 до 10"
             name="rank"
-            rules={[{ required: true, message: 'Please enter the reaction rank!' }]}
+            rules={[{ required: true, message: 'Введіть оцінку реакції!' }]}
           >
             <InputNumber min={0} max={10} />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Create
+              Додати
             </Button>
           </Form.Item>
         </Form>

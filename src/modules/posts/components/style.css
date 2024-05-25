@@ -1,15 +1,15 @@
 .propaganda-should-mark {
-    background-color: rgba(236, 236, 153, 0.89) !important;
+  background-color: rgba(236, 236, 153, 0.89) !important;
 }
 
 .propaganda-should-mark:hover td {
-    background-color: rgba(236, 236, 153, 0.89) !important;
+  background-color: rgba(236, 236, 153, 0.89) !important;
 }
 
 .row-propaganda-diff {
-    background-color: rgba(236, 169, 169, 0.87) !important;
+  background-color: rgba(236, 169, 169, 0.87) !important;
 }
 
 .row-propaganda-diff:hover td {
-    background-color: rgba(236, 169, 169, 0.87) !important;
+  background-color: rgba(236, 169, 169, 0.87) !important;
 }

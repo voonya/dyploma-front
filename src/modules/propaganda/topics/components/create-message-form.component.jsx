@@ -1,25 +1,25 @@
 import React from 'react';
 import { Collapse, Form, Input, Button, message, InputNumber } from 'antd';
 import axios from 'axios';
+import { showError, showSuccess } from '../../../common/utils/messages.utils';
+import { getApiUrl, GET_TOPICS } from '../../../common/consts';
 
 const { Panel } = Collapse;
 
 export const CreateTopicMessageForm = () => {
   const onSubmit = async (values) => {
     try {
-      console.log(values);
-      const response = await axios.post(`http://localhost:4000/topics/${values.topicId}/messages`, {...values});
-      console.log('Response:', response.data);
-      message.success('TopicMessage created successfully!');
+      await axios.post(`${getApiUrl(GET_TOPICS)}/${values.topicId}/messages`, { ...values });
+      showSuccess('Коментар успішно створено!');
     } catch (error) {
-      console.error('Error creating topicmessage:', error);
-      message.error('Failed to create topicmessage. Please try again later.');
+      showError('Помилка при створенні коментаря. Спробуйте ще.');
+      console.error(error);
     }
   };
 
   return (
     <Collapse defaultActiveKey={['1']} bordered={false}>
-      <Panel header="Create TopicMessage" key="1">
+      <Panel header="Створити коментар" key="1">
         <Form
           name="createTopicMessageForm"
           onFinish={onSubmit}
@@ -27,22 +27,22 @@ export const CreateTopicMessageForm = () => {
           initialValues={{ accountIds: [] }}
         >
           <Form.Item
-            label="Topic id"
+            label="Номер теми"
             name="topicId"
-            rules={[{ required: true, message: 'Please enter the topic id!' }]}
+            rules={[{ required: true, message: 'Введіть номер теми!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Topic message"
+            label="Коментар"
             name="message"
-            rules={[{ required: true, message: 'Please enter the topicmessage rank!' }]}
+            rules={[{ required: true, message: 'Введіть оцінку реакції!' }]}
           >
             <Input.TextArea autoSize={{ minRows: 3 }} />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Create
+              Створити
             </Button>
           </Form.Item>
         </Form>
